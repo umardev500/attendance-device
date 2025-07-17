@@ -47,7 +47,9 @@ void setup()
   scanRFID.begin();
 
   delay(100);
-  mqtt.subscribe("attendance");
+
+  // Mqtt
+  mqtt.subscribe(MqttTopic::Attendance);
   mqtt.onMessage([](String topic, String message)
                  { Serial.println(message); });
 }

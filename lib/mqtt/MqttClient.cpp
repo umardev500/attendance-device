@@ -1,5 +1,16 @@
 #include "MqttClient.h"
 
+const char *toTopicString(MqttTopic topic)
+{
+    switch (topic)
+    {
+    case MqttTopic::Attendance:
+        return "attendance";
+    default:
+        return "";
+    }
+}
+
 MqttClient::MqttClient(const char *server, uint16_t port)
     : _mqttServer(server), _mqttPort(port) {}
 
@@ -20,15 +31,15 @@ void MqttClient::loop()
     _client.loop();
 }
 
-void MqttClient::publish(const char *topic, const char *payload)
+void MqttClient::publish(MqttTopic topic, const char *payload)
 {
-    _client.publish(topic, payload);
+    _client.publish(toTopicString(topic), payload);
 }
 
-void MqttClient::subscribe(const char *topic)
+void MqttClient::subscribe(MqttTopic topic)
 {
-    _client.subscribe(topic);
-    _subscribedTopics.push_back(String(topic));
+    _client.subscribe(toTopicString(topic));
+    _subscribedTopics.push_back(toTopicString(topic));
 }
 
 void MqttClient::reconnect()

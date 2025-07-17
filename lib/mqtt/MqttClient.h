@@ -4,14 +4,22 @@
 #include <PubSubClient.h>
 #include <vector>
 
+enum class MqttTopic
+{
+    Attendance
+};
+
+// Convert enum to topic string
+const char *toTopicString(MqttTopic topic);
+
 class MqttClient
 {
 public:
     MqttClient(const char *server, uint16_t port = 1883);
     void begin();
     void loop();
-    void publish(const char *topic, const char *payload);
-    void subscribe(const char *topic);
+    void publish(MqttTopic topic, const char *payload);
+    void subscribe(MqttTopic topic);
     void onMessage(std::function<void(String topic, String message)> callback);
 
 private:
