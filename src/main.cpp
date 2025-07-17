@@ -9,6 +9,7 @@
 #include "WiFiManager.h"
 #include "MqttClient.h"
 #include "connection/WiFiConnection.h"
+#include "mqtt/MqttController.h"
 
 // Mqtt
 const char *mqttServer = "10.195.145.44";
@@ -33,6 +34,7 @@ ScanRFID scanRFID(rfid, mode, display, buzzer);
 WiFiManager wifiManager(ssid, password);
 WiFiConnection wifiConnection(wifiManager);
 MqttClient mqtt(mqttServer);
+MqttController mqttController(mqtt);
 
 void setup()
 {
@@ -49,9 +51,7 @@ void setup()
   delay(100);
 
   // Mqtt
-  mqtt.subscribe(MqttTopic::Attendance);
-  mqtt.onMessage([](String topic, String message)
-                 { Serial.println(message); });
+  mqttController.setup();
 }
 
 void loop()
