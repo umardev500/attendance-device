@@ -3,6 +3,7 @@
 #include "Buzzer.h"
 #include "Button.h"
 #include "OLEDDisplay.h"
+#include "mode/ModeManager.h"
 
 // State
 bool attendanceMode = false;
@@ -10,30 +11,18 @@ bool attendanceMode = false;
 Buzzer buzzer(4);
 Button button;
 OLEDDisplay display(128, 32);
+ModeManager mode(display, buzzer);
 
 void setup()
 {
   Serial.begin(115200);
   buzzer.begin();
-  button.begin(5, []()
-               {
-                 buzzer.beep(100, 1, 100);
-                 attendanceMode = !attendanceMode;
-
-                 if (attendanceMode)
-                 {
-                  display.showText("Mode: Masuk");
-                 }
-                 else
-                 {
-                  display.showText("Mode: Keluar");
-                 } });
   display.begin();
+  mode.begin(5);
   delay(100);
 }
 
 void loop()
 {
-  button.update();
-  // put your main code here, to run repeatedly:
+  mode.update();
 }
