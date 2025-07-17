@@ -5,6 +5,7 @@ MqttClient::MqttClient(const char *server, uint16_t port)
 
 void MqttClient::begin()
 {
+    _client.setClient(_wifiClient);
     _client.setServer(_mqttServer, _mqttPort);
     _client.setCallback(callback);
 }
@@ -26,6 +27,7 @@ void MqttClient::publish(const char *topic, const char *payload)
 void MqttClient::subscribe(const char *topic)
 {
     _client.subscribe(topic);
+    _subscribedTopics.push_back(String(topic));
 }
 
 void MqttClient::reconnect()
@@ -36,6 +38,18 @@ void MqttClient::reconnect()
         if (_client.connect("ESP32Client"))
         {
             Serial.println("connected");
+
+            // Resubscribe all topics after reconnect
+            if (_isConnected)
+            {
+                for (String topic : _subscribedTopics)
+                {
+                    Serial.print("Resubscribing to topic: ");
+                    Serial.println(topic);
+                    _client.subscribe(topic.c_str());
+                }
+            }
+            _isConnected = true;
         }
         else
         {
