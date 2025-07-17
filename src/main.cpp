@@ -42,8 +42,8 @@ void setup()
   wifiConnection.connect();
   buzzer.begin();
   mode.begin(5);
-  mqtt.begin();
   display.begin();
+  mqtt.begin();
 
   // RFID
   scanRFID.begin();
