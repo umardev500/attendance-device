@@ -12,6 +12,7 @@ public:
     void loop();
     void publish(const char *topic, const char *payload);
     void subscribe(const char *topic);
+    void onMessage(std::function<void(String topic, String message)> callback);
 
 private:
     WiFiClient _wifiClient;
@@ -22,6 +23,9 @@ private:
 
     std::vector<String> _subscribedTopics; // Store subscribed topics
 
+    // On message callback
+    std::function<void(String topic, String message)> _onMessageCallback;
+
     void reconnect();
-    static void callback(char *topic, byte *payload, unsigned int length);
+    void callback(char *topic, byte *payload, unsigned int length);
 };

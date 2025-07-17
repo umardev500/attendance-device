@@ -48,6 +48,8 @@ void setup()
 
   delay(100);
   mqtt.subscribe("attendance");
+  mqtt.onMessage([](String topic, String message)
+                 { Serial.println(message); });
 }
 
 void loop()

@@ -7,7 +7,8 @@ void MqttClient::begin()
 {
     _client.setClient(_wifiClient);
     _client.setServer(_mqttServer, _mqttPort);
-    _client.setCallback(callback);
+    _client.setCallback([this](char *topic, byte *payload, unsigned int length)
+                        { this->callback(topic, payload, length); });
 }
 
 void MqttClient::loop()
@@ -39,20 +40,18 @@ void MqttClient::reconnect()
         {
             Serial.println("connected");
 
-            // Resubscribe all topics after reconnect
-            if (_isConnected)
+            for (String topic : _subscribedTopics)
             {
-                for (String topic : _subscribedTopics)
-                {
-                    Serial.print("Resubscribing to topic: ");
-                    Serial.println(topic);
-                    _client.subscribe(topic.c_str());
-                }
+                Serial.print("Subscribing to topic: ");
+                Serial.println(topic);
+                _client.subscribe(topic.c_str());
             }
+
             _isConnected = true;
         }
         else
         {
+            _isConnected = false;
             Serial.print("failed, rc=");
             Serial.print(_client.state());
             Serial.println(" try again in 5 seconds");
@@ -63,12 +62,19 @@ void MqttClient::reconnect()
 
 void MqttClient::callback(char *topic, byte *payload, unsigned int length)
 {
-    Serial.print("Message arrived [");
-    Serial.print(topic);
-    Serial.print("] ");
+    String message;
     for (int i = 0; i < length; i++)
     {
-        Serial.print((char)payload[i]);
+        message += (char)payload[i];
     }
-    Serial.println();
+
+    if (_onMessageCallback)
+    {
+        _onMessageCallback(String(topic), message);
+    }
+}
+
+void MqttClient::onMessage(std::function<void(String topic, String message)> callback)
+{
+    _onMessageCallback = callback;
 }
