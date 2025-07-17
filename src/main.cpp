@@ -32,7 +32,7 @@ ModeManager mode(display, buzzer);
 RFIDReader rfid(RFID_SDA_PIN, RFID_RST_PIN);
 ScanRFID scanRFID(rfid, mode, display, buzzer);
 WiFiManager wifiManager(ssid, password);
-WiFiConnection wifiConnection(wifiManager);
+WiFiConnection wifiConnection(wifiManager, buzzer, display);
 MqttClient mqtt(mqttServer);
 MqttController mqttController(mqtt);
 

@@ -1,7 +1,7 @@
 #include "WiFiConnection.h"
 
-WiFiConnection::WiFiConnection(WiFiManager &wifiManager)
-    : _wifiManager(wifiManager) {}
+WiFiConnection::WiFiConnection(WiFiManager &wifiManager, Buzzer &buzzer, OLEDDisplay &display)
+    : _wifiManager(wifiManager), _buzzer(buzzer), _display(display) {}
 
 void WiFiConnection::connect()
 {
@@ -16,9 +16,13 @@ void WiFiConnection::connect()
 void WiFiConnection::onConnected()
 {
     Serial.println("Connected to WiFi");
+    _display.showText("WiFi connected!", true);
+    _buzzer.beep(100, 2);
 }
 
 void WiFiConnection::onDisconnected()
 {
     Serial.println("Disconnected from WiFi");
+    _display.showText("WiFi disconnected!", true);
+    _buzzer.beep(1000);
 }
