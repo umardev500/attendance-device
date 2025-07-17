@@ -7,6 +7,7 @@ class WiFiManager
 {
 public:
     WiFiManager(const char *ssid, const char *password, unsigned long timeout = 10000);
+    WiFiManager &begin();
     WiFiManager &connect();
     WiFiManager &onConnected(std::function<void()> callback);
     WiFiManager &onDisconnected(std::function<void()> callback);
@@ -22,7 +23,7 @@ private:
     std::function<void()> _onConnectedCallback = nullptr;
     std::function<void()> _onDisconnectedCallback = nullptr;
 
-    void handleEvent(WiFiEvent_t event);
+    void handleWiFiEvent(WiFiEvent_t event);
 };
 
 #endif

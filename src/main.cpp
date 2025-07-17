@@ -11,7 +11,9 @@ void setup()
   Serial.begin(115200);
   delay(100);
 
-  wifiManager.connect();
+  wifiManager
+      .begin()
+      .connect();
 }
 
 void loop()
