@@ -1,9 +1,17 @@
 #include <Arduino.h>
+#include "WiFiManager.h"
+
+const char *ssid = "TECNO SPARK 10 Pro";
+const char *password = "12345687";
+
+WiFiManager wifiManager(ssid, password);
 
 void setup()
 {
   Serial.begin(115200);
   delay(100);
+
+  wifiManager.connect();
 }
 
 void loop()
