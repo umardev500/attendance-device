@@ -7,7 +7,6 @@ class WiFiManager
 {
 public:
     WiFiManager(const char *ssid, const char *password, unsigned long timeout = 10000);
-    WiFiManager &begin();
     WiFiManager &connect();
     WiFiManager &onConnected(std::function<void()> callback);
     WiFiManager &onDisconnected(std::function<void()> callback);

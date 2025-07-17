@@ -8,13 +8,6 @@ WiFiManager::WiFiManager(const char *ssid, const char *password, unsigned long t
     _timeout = timeout;
 }
 
-WiFiManager &WiFiManager::begin()
-{
-    WiFi.mode(WIFI_STA);
-    WiFi.onEvent(std::bind(&WiFiManager::handleWiFiEvent, this, std::placeholders::_1));
-    return *this;
-}
-
 void WiFiManager::handleWiFiEvent(WiFiEvent_t event)
 {
     switch (event)
@@ -23,13 +16,15 @@ void WiFiManager::handleWiFiEvent(WiFiEvent_t event)
         if (_isConnected)
         {
             _isConnected = false;
-            Serial.println("[WiFiManager] disconnected!");
+            if (_onDisconnectedCallback != nullptr)
+                _onDisconnectedCallback();
         }
         break;
 
     case SYSTEM_EVENT_STA_CONNECTED:
         _isConnected = true;
-        Serial.println("[WiFiManager] connected successfully!");
+        if (_onConnectedCallback != nullptr)
+            _onConnectedCallback();
         break;
 
     default:
@@ -39,6 +34,8 @@ void WiFiManager::handleWiFiEvent(WiFiEvent_t event)
 
 WiFiManager &WiFiManager::connect()
 {
+    WiFi.mode(WIFI_STA);
+    WiFi.onEvent(std::bind(&WiFiManager::handleWiFiEvent, this, std::placeholders::_1));
     WiFi.begin(_ssid, _password);
     Serial.printf("Connecting to %s...", _ssid);
 
