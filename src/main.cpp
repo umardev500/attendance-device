@@ -1,28 +1,22 @@
 #include <Arduino.h>
 #include "WiFiManager.h"
 #include "Buzzer.h"
-
-const char *ssid = "TECNO SPARK 10 Pro";
-const char *password = "12345687";
+#include "Button.h"
 
 Buzzer buzzer(4);
-WiFiManager wifiManager(ssid, password);
+Button button;
 
 void setup()
 {
   Serial.begin(115200);
   buzzer.begin();
+  button.begin(5, []()
+               { buzzer.beep(100, 1, 100); });
   delay(100);
-
-  wifiManager
-      .onConnected([]()
-                   { buzzer.beep(100, 2); })
-      .onDisconnected([]()
-                      { buzzer.beep(3000); })
-      .connect();
 }
 
 void loop()
 {
+  button.update();
   // put your main code here, to run repeatedly:
 }
