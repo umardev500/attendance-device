@@ -18,7 +18,8 @@ void AttendanceController::publish(String message)
     }
 }
 
-void AttendanceController::subscribe(String message)
+void AttendanceController::subscribe(String message, std::function<void(MqttTopic topic, String message)> publish)
 {
     // TODO: subscribe to mqtt
+    publish(MqttTopic::Attendance, "from response");
 }

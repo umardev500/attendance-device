@@ -38,7 +38,7 @@ WiFiManager wifiManager(ssid, password);
 WiFiConnection wifiConnection(wifiManager, buzzer, display);
 MqttClient mqtt(mqttServer);
 
-MqttController mqttController(mqtt, attendanceController);
+MqttController mqttController(mqtt);
 
 void setup()
 {

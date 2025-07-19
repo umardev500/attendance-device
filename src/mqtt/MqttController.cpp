@@ -9,12 +9,5 @@ void MqttController::setup()
 
 void MqttController::handleMessage(MqttTopic topic, String message)
 {
-    if (topic == MqttTopic::Attendance)
-    {
-        _attendanceController.subscribe(message);
-    }
-    else
-    {
-        // TODO: handle message
-    }
+    // TODO: handle message
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mode/ModeManager.h"
+#include "MqttClient.h"
 
 class AttendanceController
 {
@@ -9,7 +10,9 @@ public:
 
     // Pusblish data to mqtt server
     void publish(String message);
-    void subscribe(String message);
+    void subscribe(
+        String message,
+        std::function<void(MqttTopic topic, String message)> publish = nullptr);
 
 private:
     ModeManager &_modeManager;
