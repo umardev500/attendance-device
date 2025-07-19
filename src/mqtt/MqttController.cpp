@@ -1,8 +1,5 @@
 #include "MqttController.h"
 
-MqttController::MqttController(MqttClient &client)
-    : _mqtt(client) {}
-
 void MqttController::setup()
 {
     _mqtt.subscribe(MqttTopic::Attendance);
@@ -14,8 +11,7 @@ void MqttController::handleMessage(MqttTopic topic, String message)
 {
     if (topic == MqttTopic::Attendance)
     {
-        Serial.println(message);
-        // TODO: handle message
+        _attendanceController.subscribe(message);
     }
     else
     {

@@ -11,6 +11,7 @@
 #include "connection/WiFiConnection.h"
 #include "mqtt/MqttController.h"
 #include "env.h"
+#include "controller/AttendanceController.h"
 
 // Mqtt
 const char *mqttServer = envb::MQTT_SERVER;
@@ -31,11 +32,13 @@ Button button;
 OLEDDisplay display(128, 32);
 ModeManager mode(display, buzzer);
 RFIDReader rfid(RFID_SDA_PIN, RFID_RST_PIN);
-ScanRFID scanRFID(rfid, mode, display, buzzer);
+AttendanceController attendanceController(mode);
+ScanRFID scanRFID(rfid, mode, display, buzzer, attendanceController);
 WiFiManager wifiManager(ssid, password);
 WiFiConnection wifiConnection(wifiManager, buzzer, display);
 MqttClient mqtt(mqttServer);
-MqttController mqttController(mqtt);
+
+MqttController mqttController(mqtt, attendanceController);
 
 void setup()
 {
