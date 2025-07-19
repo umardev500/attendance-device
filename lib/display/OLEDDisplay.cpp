@@ -43,3 +43,10 @@ void OLEDDisplay::clear(unsigned long delayMs)
     _display.clearDisplay();
     _display.display();
 }
+
+void OLEDDisplay::clearLineFrom(uint8_t line, uint8_t verticalSpacing, uint8_t height)
+{
+    uint8_t totalHeight = height * line + verticalSpacing * line;
+    _display.fillRect(0, totalHeight, _width, _height - totalHeight, BLACK);
+    _display.display();
+}

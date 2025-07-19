@@ -16,6 +16,7 @@ public:
     void begin();
     void showText(const String &text, bool clear = true, int x = 0, int y = 0, int size = 1);
     void clear(unsigned long delayMs = 0);
+    void clearLineFrom(uint8_t line, uint8_t verticalSpacing = 0, uint8_t height = 8);
     Adafruit_SSD1306 &getDisplay() { return _display; }
     ScreenSize getScreenSize() { return {_width, _height}; }
 
