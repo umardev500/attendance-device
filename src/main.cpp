@@ -10,13 +10,14 @@
 #include "MqttClient.h"
 #include "connection/WiFiConnection.h"
 #include "mqtt/MqttController.h"
+#include "env.h"
 
 // Mqtt
-const char *mqttServer = "10.195.145.44";
+const char *mqttServer = envb::MQTT_SERVER;
 
 // WiFi creds
-const char *ssid = "TECNO SPARK 10 Pro";
-const char *password = "12345687";
+const char *ssid = envb::WIFI_SSID;
+const char *password = envb::WIFI_PASSWORD;
 
 // PIN
 const int RFID_RST_PIN = 14;
@@ -39,6 +40,8 @@ MqttController mqttController(mqtt);
 void setup()
 {
   Serial.begin(115200);
+  Serial.println("running");
+  Serial.println(mqttServer);
   wifiConnection.connect();
   buzzer.begin();
   mode.begin(5);
