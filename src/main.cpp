@@ -32,7 +32,7 @@ Button button;
 OLEDDisplay display(128, 32);
 ModeManager mode(display, buzzer);
 RFIDReader rfid(RFID_SDA_PIN, RFID_RST_PIN);
-AttendanceController attendanceController(mode);
+AttendanceController attendanceController(mode, display);
 ScanRFID scanRFID(rfid, mode, display, buzzer, attendanceController);
 WiFiManager wifiManager(ssid, password);
 WiFiConnection wifiConnection(wifiManager, buzzer, display);

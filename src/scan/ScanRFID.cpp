@@ -4,7 +4,10 @@ void ScanRFID::begin()
 {
     _reader.begin();
     _reader.onTagScanned([this](String uid)
-                         { markAttendance(_mode.getMode(), uid); });
+                         {
+                             _buzzer.beep(100);
+                             markAttendance(_mode.getMode(), uid);
+                         });
 }
 
 void ScanRFID::scan()
@@ -14,11 +17,5 @@ void ScanRFID::scan()
 
 void ScanRFID::markAttendance(ModeManager::Mode mode, String uid)
 {
-    // Display a message
-    _display.showText("UID: " + uid);
-
-    // Buzzer
-    _buzzer.beep(100);
-
-    _attendanceController.publish(uid);
+    _attendanceController.mark(uid);
 }

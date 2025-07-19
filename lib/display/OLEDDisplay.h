@@ -3,6 +3,12 @@
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
 
+struct ScreenSize
+{
+    uint8_t width;
+    uint8_t height;
+};
+
 class OLEDDisplay
 {
 public:
@@ -10,6 +16,8 @@ public:
     void begin();
     void showText(const String &text, bool clear = true, int x = 0, int y = 0, int size = 1);
     void clear(unsigned long delayMs = 0);
+    Adafruit_SSD1306 &getDisplay() { return _display; }
+    ScreenSize getScreenSize() { return {_width, _height}; }
 
 private:
     uint8_t _width;
